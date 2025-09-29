@@ -1,0 +1,27 @@
+# azure-pipelines.yml
+trigger:
+- main  # run pipeline on push to main branch
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+# optional: install any tools if needed (not required for pure HTML)
+- script: echo "Building static HTML site..."
+  displayName: 'Build Step'
+
+# optional: test the site (skip for simple HTML)
+- script: echo "No tests required for static HTML"
+  displayName: 'Test Step'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
