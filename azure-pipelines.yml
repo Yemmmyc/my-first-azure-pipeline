@@ -3,7 +3,7 @@ trigger:
 - main  # run pipeline on push to main branch
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'MyPC-AgentPool'
 
 steps:
 # optional: install any tools if needed (not required for pure HTML)
