@@ -6,7 +6,7 @@ variables:
 - group: StaticWebToken   # 👈 This links the variable group to your pipeline
 
 pool:
-  name: 'MyPC-AgentPool'
+  name: 'ubuntu-latest'
 
 steps:
 - script: echo "Building static HTML site..."
