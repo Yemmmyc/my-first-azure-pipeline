@@ -1,39 +1,34 @@
+# azure-pipelines.yml
 trigger:
 - main
 
-variables:
-- group: StaticWebToken   # Your deployment token variable group (if still needed for reference)
-
 pool:
-  name: 'MyPC-AgentPool'  # Your self-hosted agent pool
+  name: 'MyPC-AgentPool'  # Your self-hosted agent
 
 steps:
-# Step 1: Copy all files to artifact staging folder
+# Step 1: Build (for static HTML, this is just an echo)
+- script: echo "Building static HTML site..."
+  displayName: 'Build Step'
+
+# Step 2: Copy files to artifact staging
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**'  # Copy everything in repo
+    Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy files to artifact staging'
 
-# Step 2: Publish the artifact
+# Step 3: Publish artifacts
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
-  displayName: 'Publish artifact'
 
-# Step 3: Deploy via Azure CLI (Windows-friendly)
-- task: AzureCLI@2
+# Step 4: Deploy to Azure Static Web App
+- task: AzureStaticWebApp@0
   inputs:
-    azureSubscription: '<Your Azure Service Connection Name>'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      # Deploy static web app from the artifact folder
-      az staticwebapp deploy `
-        --name <YourStaticWebAppName> `
-        --resource-group <YourResourceGroup> `
-        --source "$(Build.ArtifactStagingDirectory)"
-  displayName: 'Deploy Static Web App via Azure CLI'
+    app_location: '.'                        # Path to your static site in repo
+    output_location: ''                      # Leave blank for plain HTML
+    azure_static_web_apps_api_token: ''      # Leave empty if using service connection
+    azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'  # YOUR service connection name
+  displayName: 'Deploy to Azure Static Web App'
