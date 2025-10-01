@@ -3,7 +3,7 @@ trigger:
 - main
 
 variables:
-- group: StaticWebAppToken   # 👈 This links the variable group to your pipeline
+- group: StaticWebToken   # 👈 This links the variable group to your pipeline
 
 pool:
   name: 'MyPC-AgentPool'
