@@ -1,34 +1,45 @@
-# azure-pipelines.yml
 trigger:
 - main
 
 pool:
-  name: 'MyPC-AgentPool'  # Your self-hosted agent
+  name: 'MyPC-AgentPool'  # Your self-hosted Windows agent
 
 steps:
-# Step 1: Build (for static HTML, this is just an echo)
+# Step 1: Build (for static HTML, just a placeholder)
 - script: echo "Building static HTML site..."
   displayName: 'Build Step'
 
-# Step 2: Copy files to artifact staging
+# Step 2: Copy files to artifact staging (optional)
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-# Step 3: Publish artifacts
+# Step 3: Publish artifacts (optional)
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-# Step 4: Deploy to Azure Static Web App
-- task: AzureStaticWebApp@0
+# Step 4: Deploy to Azure Static Web App using Azure CLI
+- task: AzureCLI@2
   inputs:
-    app_location: '.'                        # Path to your static site in repo
-    output_location: ''                      # Leave blank for plain HTML
-    azure_static_web_apps_api_token: ''      # Leave empty if using service connection
-    azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'  # YOUR service connection name
+    azureSubscription: 'AzureStaticWebAppConnection'  # Your service connection
+    scriptType: 'ps'                                  # Windows PowerShell
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      # Replace with your app name and resource group
+      $appName = "my-first-static-site"
+      $resourceGroup = "my-first-static-site_group"
+
+      Write-Host "Deploying static HTML to $appName..."
+      
+      az staticwebapp upload `
+        --name $appName `
+        --resource-group $resourceGroup `
+        --source "$(Build.SourcesDirectory)" `
+        --location "Central US" `
+        --verbose
   displayName: 'Deploy to Azure Static Web App'
