@@ -1,3 +1,4 @@
+
 # azure-pipelines.yml
 trigger:
 - main
@@ -33,4 +34,5 @@ steps:
     output_location: ''
     azure_static_web_apps_api_token: '$(deployment_token)'
   displayName: 'Deploy to Azure Static Web App'
+
 
