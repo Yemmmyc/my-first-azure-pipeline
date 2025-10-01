@@ -1,4 +1,3 @@
-
 trigger:
 - main
 
@@ -6,14 +5,36 @@ variables:
 - group: StaticWebToken   # Your deployment token variable group
 
 pool:
-  name: 'MyPC-AgentPool'  # Use your self-hosted agent
+  name: 'MyPC-AgentPool'  # Self-hosted agent
 
 steps:
-- task: AzureStaticWebApp@0
+# Step 1: Copy files to artifact staging folder
+- task: CopyFiles@2
   inputs:
-    app_location: '.'                     # Path to your static site in the repo
-    output_location: ''                   # Leave blank for plain HTML
-    azure_static_web_apps_api_token: '$(deployment_token)'
-  displayName: 'Deploy to Azure Static Web App'
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**'             # Copy everything
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+# Step 2: Publish artifact
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
+# Step 3: Deploy using Azure CLI instead of AzureStaticWebApp task
+- task: AzureCLI@2
+  inputs:
+    azureSubscription: '<Your Azure Service Connection>'
+    scriptType: 'ps'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az staticwebapp deploy \
+        --name <YourStaticWebAppName> \
+        --resource-group <YourResourceGroup> \
+        --source $(Build.ArtifactStagingDirectory)
+  displayName: 'Deploy Static Web App via Azure CLI'
+
+
 
 
