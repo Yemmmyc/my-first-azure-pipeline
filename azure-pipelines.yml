@@ -1,37 +1,18 @@
 
-# azure-pipelines.yml
 trigger:
 - main
 
 variables:
-- group: StaticWebToken   # 👈 This links the variable group to your pipeline
+- group: StaticWebToken   # Your deployment token variable group
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'MyPC-AgentPool'  # Use your self-hosted agent
 
 steps:
-- script: echo "Building static HTML site..."
-  displayName: 'Build Step'
-
-- script: echo "No tests required for static HTML"
-  displayName: 'Test Step'
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-
 - task: AzureStaticWebApp@0
   inputs:
-    app_location: '$(Build.SourcesDirectory)'
-    output_location: ''
+    app_location: '.'                     # Path to your static site in the repo
+    output_location: ''                   # Leave blank for plain HTML
     azure_static_web_apps_api_token: '$(deployment_token)'
   displayName: 'Deploy to Azure Static Web App'
 
