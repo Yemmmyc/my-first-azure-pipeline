@@ -6,22 +6,32 @@ pool:
   name: 'MyPC-AgentPool'
 
 steps:
-# optional: install any tools if needed (not required for pure HTML)
+# 🧱 Build Step (Optional)
 - script: echo "Building static HTML site..."
   displayName: 'Build Step'
 
-# optional: test the site (skip for simple HTML)
+# 🧪 Test Step (Optional)
 - script: echo "No tests required for static HTML"
   displayName: 'Test Step'
 
+# 📂 Copy files to artifact staging
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)'
     Contents: '**'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
+# 📦 Publish build artifacts
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop'
     publishLocation: 'Container'
+
+# 🚀 Deploy to Azure Static Web App
+- task: AzureStaticWebApp@0
+  inputs:
+    app_location: '$(Build.SourcesDirectory)'
+    output_location: ''
+    azure_static_web_apps_api_token: '$(deployment_token)'
+  displayName: 'Deploy to Azure Static Web App'
