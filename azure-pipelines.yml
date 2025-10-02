@@ -3,31 +3,31 @@ trigger:
 - main
 
 pool:
-  name: 'MyPC-AgentPool'  # Your self-hosted agent
+  name: 'MyPC-AgentPool'  # Your self-hosted agent pool (banji-agent)
 
 steps:
-# Use Node 20.x to match your local setup
+# Step 1: Use Node.js 20.x to match your local environment
 - task: NodeTool@0
   inputs:
     versionSpec: '20.x'
   displayName: 'Use Node.js 20.x'
 
-# Install NPM packages
+# Step 2: Install NPM packages
 - script: |
     cd nebula-ui
     npm install
   displayName: 'Install NPM packages'
 
-# Build React app
+# Step 3: Build React app
 - script: |
     cd nebula-ui
     npm run build
   displayName: 'Build React App'
 
-# Deploy to Azure Static Web App
+# Step 4: Deploy to Azure Static Web App
 - task: AzureStaticWebApp@0
   inputs:
     azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'  # Your service connection
-    app_location: 'nebula-ui'        # Folder containing package.json
-    output_location: 'build'         # Build output folder inside nebula-ui
+    app_location: 'nebula-ui'            # Folder containing package.json
+    output_location: 'nebula-ui/build'   # React build output folder
   displayName: 'Deploy to Azure Static Web App'
