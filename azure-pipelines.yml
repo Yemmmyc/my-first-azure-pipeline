@@ -1,46 +1,37 @@
 # azure-pipelines.yml
 trigger:
-  - main   # Runs pipeline on push to 'main'
+- main
 
 pool:
   name: 'MyPC-AgentPool'  # Your self-hosted agent
 
-variables:
-  # Service connection for Azure Static Web App
-  azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'
-
-  # Optional: App-specific variables
-  staticAppName: "my-first-static-site"
-  resourceGroup: "my-first-static-site_group"
-  appLocation: "."         # Directory of your static app
-  outputLocation: "build"  # Output folder for built files (if any)
-
 steps:
-  # Step 1: Prepare / echo (optional for static HTML).....
-  - script: echo "Preparing static HTML site for deployment..."
-    displayName: 'Prepare Site'
+# Step 1: Use Node.js (required for React)
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'   # Specify Node.js version
+  displayName: 'Use Node.js 18.x'
 
-  # Step 2: Copy files to staging directory....
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: '$(Build.SourcesDirectory)'
-      Contents: '**'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-    displayName: 'Copy Files to Staging'
+# Step 2: Install dependencies
+- script: npm install
+  displayName: 'Install NPM packages'
 
-  # Step 3: Publish artifacts (optional)
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      ArtifactName: 'drop'
-      publishLocation: 'Container'
-    displayName: 'Publish Artifacts'
+# Step 3: Build React app
+- script: npm run build
+  displayName: 'Build React App'
 
-  # Step 4: Deploy to Azure Static Web App
-  - task: AzureStaticWebApp@0
-    inputs:
-      azure_static_web_apps_service_connection: '$(azure_static_web_apps_service_connection)'
-      app_location: '$(appLocation)'
-      output_location: '$(outputLocation)'
-    displayName: 'Deploy to Azure Static Web App'
+# Step 4: Copy build folder to staging
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/build'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy Build to Artifact Staging'
 
+# Step 5: Deploy to Azure Static Web App
+- task: AzureStaticWebApp@0
+  inputs:
+    azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'
+    app_location: '.'             # Root of repo
+    output_location: 'build'      # React build output folder
+  displayName: 'Deploy to Azure Static Web App'
