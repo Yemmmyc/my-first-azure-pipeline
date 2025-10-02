@@ -6,11 +6,11 @@ pool:
   name: 'MyPC-AgentPool'  # Your self-hosted agent
 
 steps:
-# Use Node 18.x to avoid incompatibility
+# Use Node 20.x to match your local setup
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x'
-  displayName: 'Use Node.js 18.x'
+    versionSpec: '20.x'
+  displayName: 'Use Node.js 20.x'
 
 # Install NPM packages
 - script: |
@@ -28,6 +28,6 @@ steps:
 - task: AzureStaticWebApp@0
   inputs:
     azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'  # Your service connection
-    app_location: 'nebula-ui/build'      # Path to React build output
-    output_location: ''
+    app_location: 'nebula-ui'      # Folder containing package.json
+    output_location: 'nebula-ui/build'  # Build output folder
   displayName: 'Deploy to Azure Static Web App'
