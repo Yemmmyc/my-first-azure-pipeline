@@ -2,31 +2,36 @@ trigger:
 - main
 
 pool:
-  name: 'MyPC-AgentPool'  # Your self-hosted agent
+  name: 'MyPC-AgentPool'  # Your self-hosted agent pool
+
+variables:
+  azureSPAppId: $(azureSPAppId)         # Service principal appId
+  azureSPPassword: $(azureSPPassword)   # Service principal password (secret)
+  azureTenantId: $(azureTenantId)       # Tenant ID
+  staticAppName: "YOUR_STATIC_APP_NAME"
+  resourceGroup: "YOUR_RESOURCE_GROUP"
+  appLocation: "."                      # Directory of your static app
+  outputLocation: "build"               # Build output directory
 
 steps:
-# Step 1: Build (for static HTML, this is just an echo)
-- script: echo "Building static HTML site..."
-  displayName: 'Build Step'
 
-# Step 2: Copy files to artifact staging
-- task: CopyFiles@2
+- task: PowerShell@2
+  displayName: 'Deploy Static Web App'
   inputs:
-    SourceFolder: '$(Build.SourcesDirectory)'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    targetType: 'inline'
+    script: |
+      Write-Host "Logging in to Azure using service principal..."
+      az login --service-principal -u $(azureSPAppId) -p $(azureSPPassword) --tenant $(azureTenantId)
 
-# Step 3: Publish artifacts
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+      Write-Host "Installing dependencies and building app (if needed)..."
+      # Add build commands here if your app requires it
+      # Example for Node.js: npm install && npm run build
 
-# Step 4: Deploy to Azure Static Web App
-- task: AzureStaticWebApp@0
-  inputs:
-    app_location: '.'                        # Path to your static site in repo
-    output_location: ''                      # Leave blank for plain HTML
-    azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'  # Your service connection name
-  displayName: 'Deploy to Azure Static Web App'
+      Write-Host "Deploying static app to Azure Static Web App..."
+      az staticwebapp deploy `
+        --name $(staticAppName) `
+        --resource-group $(resourceGroup) `
+        --source-location $(appLocation) `
+        --output-location $(outputLocation)
+
+      Write-Host "Deployment completed successfully!"
