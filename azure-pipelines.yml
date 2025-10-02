@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 trigger:
 - main
 
@@ -41,3 +42,44 @@ steps:
         --output-location $(outputLocation)
 
       Write-Host "Deployment completed successfully!"
+=======
+# azure-pipelines.yml
+trigger:
+- main   # Runs pipeline on push to 'main'
+
+pool:
+  name: 'MyPC-AgentPool'  # Your self-hosted agent
+
+variables:
+  # Optional: override this if you want to use a deployment token instead of service connection
+  azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'
+
+steps:
+# Step 1: Prepare / echo (optional for static HTML)
+- script: echo "Preparing static HTML site for deployment..."
+  displayName: 'Prepare Site'
+
+# Step 2: Copy files to staging directory
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy Files to Staging'
+
+# Step 3: Publish artifacts (optional)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+  displayName: 'Publish Artifacts'
+
+# Step 4: Deploy to Azure Static Web App
+- task: AzureStaticWebApp@0
+  inputs:
+    azure_static_web_apps_service_connection: '$(azure_static_web_apps_service_connection)'  # Service connection
+    app_location: '.'                   # Path to your static site in repo
+    output_location: ''                 # Leave blank for plain HTML
+  displayName: 'Deploy to Azure Static Web App'
+>>>>>>> dcccc55 (Initial commit: static web app files)
