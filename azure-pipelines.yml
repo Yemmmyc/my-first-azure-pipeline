@@ -8,8 +8,8 @@ variables:
   azureSPAppId: $(azureSPAppId)         # Service principal appId
   azureSPPassword: $(azureSPPassword)   # Service principal password (secret)
   azureTenantId: $(azureTenantId)       # Tenant ID
-  staticAppName: "YOUR_STATIC_APP_NAME"
-  resourceGroup: "YOUR_RESOURCE_GROUP"
+  staticAppName: "Ymy-first-static-site"
+  resourceGroup: "my-first-static-site_group"
   appLocation: "."                      # Directory of your static app
   outputLocation: "build"               # Build output directory
 
