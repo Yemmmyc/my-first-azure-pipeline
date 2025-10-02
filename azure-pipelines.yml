@@ -16,11 +16,11 @@ variables:
   outputLocation: "build"  # Output folder for built files (if any)
 
 steps:
-  # Step 1: Prepare / echo (optional for static HTML)
+  # Step 1: Prepare / echo (optional for static HTML).....
   - script: echo "Preparing static HTML site for deployment..."
     displayName: 'Prepare Site'
 
-  # Step 2: Copy files to staging directory
+  # Step 2: Copy files to staging directory....
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)'
