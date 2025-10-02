@@ -1,37 +1,40 @@
 # azure-pipelines.yml
 trigger:
-- main
+- main   # Runs pipeline on push to 'main'
 
 pool:
   name: 'MyPC-AgentPool'  # Your self-hosted agent
 
+variables:
+  azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection' # Your service connection
+
 steps:
-# Step 1: Use Node.js (required for React)
+
+# Step 1: Install Node.js
 - task: NodeTool@0
   inputs:
-    versionSpec: '18.x'   # Specify Node.js version
-  displayName: 'Use Node.js 18.x'
+    versionSpec: '20.x'   # Use the Node.js version your React app requires
+  displayName: 'Use Node.js 20.x'
 
-# Step 2: Install dependencies
-- script: npm install
+# Step 2: Install NPM packages
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'nebula-ui'    # React project folder
   displayName: 'Install NPM packages'
 
-# Step 3: Build React app
-- script: npm run build
+# Step 3: Build React App
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    customCommand: 'run build'
+    workingDir: 'nebula-ui'
   displayName: 'Build React App'
 
-# Step 4: Copy build folder to staging
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(System.DefaultWorkingDirectory)/build'
-    Contents: '**'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-  displayName: 'Copy Build to Artifact Staging'
-
-# Step 5: Deploy to Azure Static Web App
+# Step 4: Deploy to Azure Static Web App
 - task: AzureStaticWebApp@0
   inputs:
-    azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'
-    app_location: '.'             # Root of repo
-    output_location: 'build'      # React build output folder
-  displayName: 'Deploy to Azure Static Web App'
+    azure_static_web_apps_service_connection: '$(azure_static_web_apps_service_connection)'
+    app_location: 'nebula-ui'          # React source folder
+    output_location: 'nebula-ui/build' # React build folder
+  displayName: 'Deploy React App'
