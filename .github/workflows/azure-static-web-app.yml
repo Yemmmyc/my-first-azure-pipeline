@@ -1,22 +1,25 @@
-name: Azure Static Web App CI/CD
+name: Deploy Static Web App
 
 on:
   push:
     branches:
-      - main
+      - main  # Deploy whenever you push to main
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+
     steps:
+      # Checkout your code
       - uses: actions/checkout@v3
 
+      # Deploy to Azure Static Web App
       - name: Deploy to Azure Static Web App
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/"       # Folder containing index.html
-          api_location: ""        # No API
-          output_location: "/"    # Root folder
+          app_location: "/"       # index.html is in the root
+          api_location: ""        # no API
+          output_location: "/"    # deploy root folder
