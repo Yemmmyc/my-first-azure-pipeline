@@ -28,6 +28,6 @@ steps:
 - task: AzureStaticWebApp@0
   inputs:
     azure_static_web_apps_service_connection: 'AzureStaticWebAppConnection'  # Your service connection
-    app_location: 'nebula-ui'      # Folder containing package.json
-    output_location: 'nebula-ui/build'  # Build output folder
+    app_location: 'nebula-ui'        # Folder containing package.json
+    output_location: 'build'         # Build output folder inside nebula-ui
   displayName: 'Deploy to Azure Static Web App'
