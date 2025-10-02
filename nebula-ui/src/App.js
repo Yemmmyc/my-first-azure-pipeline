@@ -1,0 +1,134 @@
+import React from "react";
+import { motion } from "framer-motion";
+
+// Nebula UI main component
+export default function App() {
+  return (
+    <div className="min-h-screen bg-black text-gray-100 font-sans">
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <header className="flex items-center justify-between mb-12">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-[#071013] border border-[#0f6b42]">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="18" height="18" rx="3" stroke="#0ef07f" strokeWidth="1.2" />
+                <path d="M7 12h10" stroke="#0ef07f" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </div>
+            <div>
+              <h1 className="text-xl font-semibold tracking-wide text-[#8affc2]">Nebula UI</h1>
+              <p className="text-xs text-gray-400">A minimal black-ground UI with neon accents</p>
+            </div>
+          </div>
+
+          <nav className="flex items-center gap-4">
+            <a className="text-sm text-gray-300 hover:text-[#b6ffd6]" href="#features">Features</a>
+            <a className="text-sm text-gray-300 hover:text-[#b6ffd6]" href="#examples">Examples</a>
+            <button className="ml-2 inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-[#0f6b42] text-xs font-medium text-black">Get Started</button>
+          </nav>
+        </header>
+
+        <main>
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+            <motion.div
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              <h2 className="text-4xl md:text-5xl font-extrabold leading-tight text-white">
+                Beautiful, <span className="text-[#0ef07f]">Black</span> Background App
+              </h2>
+              <p className="mt-4 text-gray-300 max-w-xl">
+                A compact design system for dark themes — high contrast, neon accents, and crisp components that pop on a black canvas.
+              </p>
+
+              <div className="mt-6 flex gap-3">
+                <button className="px-4 py-2 rounded-md bg-[#0ef07f] text-black font-semibold">Explore</button>
+                <button className="px-4 py-2 rounded-md border border-gray-700 text-gray-300">Documentation</button>
+              </div>
+            </motion.div>
+
+            <motion.div
+              className="bg-gradient-to-br from-[#071013] via-[#071819] to-[#071013] border border-[#0f6b42] rounded-xl p-6 shadow-xl"
+              initial={{ scale: 0.98, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-[#baffd0]">Live Metrics</h3>
+                  <p className="text-sm text-gray-400">CPU · Memory · Requests</p>
+                </div>
+                <div className="text-sm text-green-300 font-mono">healthy</div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Stat label="CPU" value="38%" />
+                <Stat label="Memory" value="622Mi" />
+                <Stat label="Requests" value="1.2k" />
+                <Stat label="Latency" value="120ms" />
+              </div>
+            </motion.div>
+          </section>
+
+          <section id="features" className="mb-12">
+            <h3 className="text-2xl font-bold text-white mb-4">Core Features</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FeatureCard title="Dark-first" desc="Designed for low-light environments with high-contrast micro-interactions." icon="🌑" />
+              <FeatureCard title="Neon Accents" desc="Accent colors (green) used for CTAs and highlights that stand out on black." icon="✨" />
+              <FeatureCard title="Accessible" desc="High contrast and clear focus states for better accessibility." icon="♿" />
+            </div>
+          </section>
+
+          <section id="examples" className="mb-6">
+            <h3 className="text-2xl font-bold text-white mb-4">Component Examples</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card title="Neon Card" body="Card design with subtle glow and thin border." />
+              <Card title="Terminal" body={<code className="block font-mono text-sm">$ kubectl get pods</code>} />
+            </div>
+          </section>
+        </main>
+
+        <footer className="mt-12 border-t border-gray-800 pt-6 text-center text-sm text-gray-500">
+          Built with care • Nebula UI • © {new Date().getFullYear()}
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+// Components
+function Stat({ label, value }) {
+  return (
+    <div className="p-3 rounded-md bg-[#041012] border border-[#0f6b42]">
+      <div className="text-sm text-gray-400">{label}</div>
+      <div className="mt-1 text-xl font-semibold text-white">{value}</div>
+    </div>
+  );
+}
+
+function FeatureCard({ title, desc, icon }) {
+  return (
+    <div className="p-4 rounded-lg border border-gray-800 bg-gradient-to-br from-[#050606] to-[#071213]">
+      <div className="flex items-center gap-3">
+        <div className="text-2xl">{icon}</div>
+        <div>
+          <div className="font-semibold text-white">{title}</div>
+          <div className="text-sm text-gray-400">{desc}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Card({ title, body }) {
+  return (
+    <div className="p-4 rounded-lg border border-[#12221a] bg-gradient-to-br from-[#031212] to-[#071314] shadow-sm">
+      <div className="flex items-center justify-between mb-2">
+        <div className="font-semibold text-white">{title}</div>
+        <div className="text-xs text-green-300">beta</div>
+      </div>
+      <div className="text-sm text-gray-300">{body}</div>
+    </div>
+  );
+}
+

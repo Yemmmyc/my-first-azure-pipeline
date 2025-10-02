@@ -1,0 +1,11 @@
+/* input.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+body {
+    background-color: black;
+    color: #39ff14; /* neon green text */
+    font-family: 'Courier New', monospace;
+}

@@ -1,0 +1,27 @@
+{
+  "name": "nebula-ui",
+  "version": "1.0.0",
+  "description": "Static web app with Tailwind CSS",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "build:css:local": "tailwindcss -i ./input.css -o ./dist/styles.css --minify"
+  },
+  "devDependencies": {
+    "autoprefixer": "^11.8.0",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^3.4.13"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
