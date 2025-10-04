@@ -104,7 +104,7 @@ npm start
 ## 📸 Screenshots & GIFs
 
 ### Full-page Screenshot
-![Full Nebula UI App](assets/fullpage.png)
+![Full Nebula UI App](images/webpage.png.png)
 
 ---
 
