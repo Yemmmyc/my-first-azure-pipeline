@@ -37,4 +37,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "nebula-ui"       # points to folder with package.json
-          output_location: "nebula-ui/build" # React build output
+          output_location: "build" # React build output
