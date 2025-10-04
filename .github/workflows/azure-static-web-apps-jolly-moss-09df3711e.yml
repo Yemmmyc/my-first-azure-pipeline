@@ -55,7 +55,7 @@ jobs:
           action: "upload"
           app_location: "nebula-ui"
           api_location: ""
-          output_location: "nebula-ui/build"
+          output_location: "build"
           github_id_token: ${{ steps.idtoken.outputs.result }}
 
   close_pull_request_job:
