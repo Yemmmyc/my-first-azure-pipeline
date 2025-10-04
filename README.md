@@ -1,16 +1,19 @@
 # 🌌 Nebula UI App
 
-![Azure Static Web Apps](https://img.shields.io/badge/Deployment-Azure%20Static%20Web%20Apps-blue) ![React](https://img.shields.io/badge/Framework-React-blueviolet) ![Node.js](https://img.shields.io/badge/Node.js-18.20.8-green)
+![Azure Static Web Apps](https://img.shields.io/badge/Deployment-Azure%20Static%20Web%20Apps-blue)
+![React](https://img.shields.io/badge/Framework-React-blueviolet)
+![Node.js](https://img.shields.io/badge/Node.js-18.20.8-green)
 
-> A modern, responsive static web app built with **React**, deployed on **Azure Static Web Apps**, featuring clean architecture and easy CI/CD integration.
+> A modern, responsive static web app built with **React**, deployed on **Azure Static Web Apps**, featuring clean architecture and automated CI/CD integration.
 
 ---
 
 ## 🎯 Project Aim
-The **Nebula UI App** is designed to demonstrate:
-- A full React front-end app with optimized production build.
+The **Nebula UI App** demonstrates:
+
+- A fully responsive React front-end application with optimized production build.
 - Continuous Deployment using **Azure Static Web Apps**.
-- Proper GitHub Actions workflow setup for automated CI/CD.
+- Proper GitHub Actions workflow for automated CI/CD.
 - Best practices in project structure, `.gitignore`, and secret management.
 
 ---
@@ -25,6 +28,7 @@ nebula-ui-app/
 ├── .github/
 │   └── workflows/
 │       └── azure-static-web-apps.yml  # CI/CD workflow
+├── assets/                  # Screenshots, images, GIFs
 ├── .gitignore
 └── README.md
 ```
@@ -44,8 +48,8 @@ nebula-ui-app/
 
 ### 1️⃣ Connect Repo to Azure
 1. Create a **Static Web App** in the Azure Portal.
-2. Link **GitHub repository**.
-3. Do **not let Azure generate workflow** if one exists.
+2. Link your **GitHub repository**.
+3. Skip Azure's auto workflow if you already have one.
 
 ### 2️⃣ Set GitHub Secrets
 - Add `AZURE_STATIC_WEB_APPS_API_TOKEN` (from Azure) to GitHub secrets.
@@ -58,37 +62,32 @@ output_location: "nebula-ui/build"
 ```
 
 ### 4️⃣ Build & Deploy
-- `npm install` → install dependencies
-- `npm run build` → generate optimized production build
-- GitHub Actions workflow triggers deployment automatically
+```bash
+npm install
+npm run build
+```
+- Workflow triggers GitHub Actions automatically to deploy the app.
 
 ---
 
 ## ⚙️ Technologies Used
-| Technology | Version / Type |
-|------------|----------------|
-| React      | 18.x           |
-| Node.js    | 18.20.8        |
-| GitHub Actions | CI/CD        |
-| Azure      | Static Web Apps |
+| Technology       | Version / Type      |
+|-----------------|-------------------|
+| React            | 18.x              |
+| Node.js          | 18.20.8           |
+| GitHub Actions   | CI/CD             |
+| Azure            | Static Web Apps   |
 
 ---
 
 ## 🛠 Local Setup
-1. Clone the repository:
 ```bash
 git clone https://github.com/Yemmmyc/my-first-azure-pipeline.git
 cd my-first-azure-pipeline/nebula-ui
-```
-2. Install dependencies:
-```bash
 npm install
-```
-3. Run the development server:
-```bash
 npm start
 ```
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+- Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
@@ -102,6 +101,13 @@ npm start
 
 ---
 
+## 📸 Screenshots & GIFs
+
+### Full-page Screenshot
+![Full Nebula UI App](assets/fullpage.png)
+
+---
+
 ## 🔧 Troubleshooting
 - **BadRequest / API Key invalid** → verify token in GitHub Secrets.
 - **Artifact folder missing** → check `output_location` in workflow.
@@ -109,18 +115,16 @@ npm start
 
 ---
 
-## 📸 Screenshots & GIFs
-![App Screenshot](https://via.placeholder.com/600x400.png?text=Nebula+UI+App+Screenshot)
-![Deployment GIF](https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif)
-
----
-
 ## 📌 Notes
 - Only one active workflow is recommended.
-- Always keep `.gitignore` updated to avoid unnecessary commits.
+- Always keep `.gitignore` updated.
 - Monitor GitHub Actions logs for deployment issues.
 
 ---
 
 ## 📝 Author
 **Yemisi** – IT & DevOps Enthusiast  
+[GitHub](https://github.com/Yemmmyc)
+
+
+
